@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>رسالة حب - هدية لنوني</title>
+  
+  <!-- استيراد خط عربي جميل من جوجل -->
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* إعادة ضبط الأنماط الافتراضية */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Tajawal', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      /* خلفية متعددة التدرجات */
+      background: linear-gradient(135deg, #0a192f 0%, #172a45 50%, #000428 100%);
+      color: #ccd6f6;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    /* مقطع المقدّمة */
+    .hero-section {
+      width: 100%;
+      max-width: 800px;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .hero-title {
+      font-size: 2.5rem;
+      color: #ffb6c1;
+      text-shadow: 0 0 10px rgba(255, 182, 193, 0.7);
+      margin-bottom: 10px;
+      position: relative;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    /* قلب صغير تحت الاسم */
+    .hero-heart {
+      font-size: 2rem;
+      color: #ff5f5f;
+      animation: pulse 1.5s infinite;
+      margin-bottom: 20px;
+    }
+
+    .hero-subtitle {
+      font-size: 1.2rem;
+      color: #eee;
+      margin: 0 auto;
+      max-width: 500px;
+      line-height: 1.6;
+    }
+
+    /* تأثير اللمعان */
+    @keyframes glow {
+      0% {
+        text-shadow: 0 0 10px #ffb6c1, 0 0 20px #ffb6c1, 0 0 30px #ffb6c1;
+      }
+      100% {
+        text-shadow: 0 0 20px #ffb6c1, 0 0 30px #ffb6c1, 0 0 40px #ffb6c1;
+      }
+    }
+
+    /* تأثير النبض للقلب */
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.2);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .container {
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+    }
+
+    /* الظرف */
+    .envelope {
+      font-size: 5rem;
+      cursor: pointer;
+      transition: transform 0.3s;
+      display: inline-block;
+      margin: 20px auto;
+      color: #ff8c94; 
+      text-shadow: 0 0 5px #ff8c94;
+    }
+    .envelope:hover {
+      transform: scale(1.1);
+    }
+
+    /* الرسالة (مخفية في البداية) */
+    .letter {
+      background: rgba(31, 64, 104, 0.9);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: justify;
+      margin: 0 auto;
+      max-width: 600px;
+      width: 100%;
+      opacity: 0;             /* مخفية */
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      display: none;          /* غير ظاهرة */
+    }
+    .letter.show {
+      display: block;         /* نعرض العنصر */
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .letter h3 {
+      text-align: center;
+      margin-bottom: 1em;
+      font-size: 1.6rem;
+      color: #ffb6c1;
+      text-shadow: 0 0 5px rgba(255, 182, 193, 0.4);
+    }
+    .letter p {
+      margin-bottom: 1em;
+      line-height: 1.8;
+      color: #ddd;
+    }
+
+    /* التاريخ واسم الكاتب في أسفل الرسالة */
+    .date-info {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.95rem;
+      color: #ffb6c1;
+      opacity: 0.9;
+    }
+    .date-info strong {
+      font-weight: 700;
+    }
+
+    /* النافذة المنبثقة (مودال) */
+    .modal-overlay {
+      position: fixed;
+      top: 0; right: 0; bottom: 0; left: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: none; 
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal-content {
+      background: #1f4068;
+      border-radius: 10px;
+      padding: 20px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      color: #ccd6f6;
+    }
+    .modal-content h2 {
+      margin-bottom: 15px;
+      font-size: 1.4rem;
+      color: #ffb6c1;
+      text-shadow: 0 0 5px rgba(255, 182, 193, 0.4);
+    }
+
+    /* الجملة الجديدة */
+    .headphone-note {
+      font-size: 1rem;
+      color: #ddd;
+      margin-bottom: 1em;
+    }
+
+    /* أزرار التحكم بالموسيقى */
+    .music-controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      margin-top: 10px;
+    }
+    .music-controls button {
+      background: #4b0082;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+      font-size: 1rem;
+    }
+    .music-controls button:hover {
+      background: #6a1b9a;
+    }
+    .volume-control {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+    .volume-control label {
+      font-size: 1rem;
+      color: #aaa;
+    }
+    .volume-control input[type="range"] {
+      width: 150px;
+      cursor: pointer;
+    }
+
+    /* استجابة للشاشات الصغيرة */
+    @media (max-width: 600px) {
+      .hero-title {
+        font-size: 2rem;
+      }
+      .hero-heart {
+        font-size: 1.6rem;
+      }
+      .letter h3 {
+        font-size: 1.4rem;
+      }
+      .letter {
+        padding: 15px;
+      }
+      .volume-control input[type="range"] {
+        width: 120px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- مقطع المقدّمة -->
+  <section class="hero-section">
+    <h1 class="hero-title">Nony</h1>
+    <div class="hero-heart">❤️</div>
+    <p class="hero-subtitle">
+      هلا بنور قلبي نوني،  
+      جهّزت لكِ رسالة بسيطة ولكن تحمل في طيّاتها كل الحب والامتنان.<br>
+      اضغطي على الظرف أدناه.
+    </p>
+  </section>
+
+  <div class="container">
+    <!-- الظرف -->
+    <div class="envelope" id="envelope">💌</div>
+
+    <!-- الرسالة -->
+    <div class="letter" id="letter">
+      <h3>هلا بنور قلبي، أتمنى لك قراءة ممتعة</h3>
+      <p>إلى من تسكن قلبي وتأبى أن تغادره،</p>
+      <p>لقد أحببتكِ بصدق، بكل ما في قلبي من دفء وحنان، رغم المسافة التي تفصل بيننا، ورغم كل ما نمر به من أيام وأحداث. لكنني أؤمن أن الحب الحقيقي لا يعرف الحدود، ولا يتأثر بالعقبات، بل يزهر رغم كل شيء، وينمو ليمنحنا أجمل ما في الحياة.</p>
+      <p>لا أطلب منكِ سوى أن نبقى معًا، أن نمنح هذا الحب فرصة ليكبر أكثر، ليضيء أيامنا كما كان دائمًا. أريد أن نقترب أكثر، أن نفهم بعضنا بعمق، أن نشارك اللحظات البسيطة كما نعيش الأحلام الكبيرة.</p>
+      <p>أنا لا أريد لهذا الحب أن يكون مجرد ذكرى، بل أريده أن يستمر، أن يصنع لنا قصة جميلة تستحق أن تُروى، أن نكتبها معًا بصدق مشاعرنا ودفء قلوبنا. كل لحظة معكِ تعني لي الكثير، وكل يوم هو هدية أقدّرها، وليس فقط يومًا واحدًا للاحتفال بالحب، فوجودكِ في حياتي هو احتفالي الحقيقي كل يوم.</p>
+      <p>لحد يلومني بحبكِ يا ناس، والله إن وجودكِ مثل الغيث، ينزل على أرضٍ جرداء فيحييها، يخضرّ بها القلب قبل الأرض، ويزهر بها العمر فرحًا. حديثكِ ليس مجرد كلمات، بل راحة تمتد في صدري، واتساع لا حدود له، كأنكِ نسمة تُبدّد عني كل ضيق. وإن ابتسمتِ، فابتسامتكِ ليست عادية، بل ذخيرة لقلبي، قوتٌ لروحي، وسعادة لا تقاس.</p>
+      <p>أنتِ الفرح حين يغيب، والونس حين تشتد الوحشة، وأنتِ الأمان وسط الفوضى. حبكِ ليس اختيارًا، بل قدرٌ كُتب ليكون أجمل ما في أيامي.</p>
+      <p>ويوم ميلادكِ؟ هذا اليوم لم يكن مجرد يوم عادي، بل هو اليوم الذي وُلد فيه أجمل إنسان عرفه قلبي، اليوم الذي جاء فيه النور لحياتي. <strong>27 يوليو 1999</strong> لم يكن مجرد تاريخ، بل كان البداية لحكاية جميلة جمعتني بكِ. وكل عام وأنتِ أجمل ما في حياتي، وأغلى ما في أيامي، وكل عام وأنتِ الحب الذي لا يشبهه حب. ❤️</p>
+      
+      <!-- تاريخ كتابة الرسالة واسم الكاتب -->
+      <p class="date-info">
+        كتبت هذه الرسالة بتاريخ <strong>13/02/2025 10:15 PM</strong><br>
+        من <strong>Nawaf</strong>
+      </p>
+    </div>
+  </div>
+
+  <!-- النافذة المنبثقة لتحديد الصوت وتشغيل الموسيقى -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-content">
+      <h2>اختر مستوى الصوت وشغّل الموسيقى</h2>
+      <!-- جملة جديدة: البسي سماعتك بالأول 🎧 -->
+      <p class="headphone-note">البسي سماعتك بالأول ممكن؟ 🎧</p>
+      
+      <div class="music-controls">
+        <div class="volume-control">
+          <label for="volume">مستوى الصوت:</label>
+          <input type="range" id="volume" min="0" max="1" step="0.01" value="0.5">
+        </div>
+        <button id="startMusicBtn">تشغيل الموسيقى</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ملف الصوت (رابط أغنيتك) -->
+  <audio id="loveSong" preload="auto" loop>
+    <source 
+      src="https://rr5---sn-hgn7yn7l.googlevideo.com/videoplayback?expire=1739494482&ei=8j-uZ9j3HMvZs8IP19e-8Qs&ip=128.14.226.130&id=o-AK5NwQ074X5Yhzq5U3ObjzG6P-TPw_-Rkk4H6--5dKuG&itag=139&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&bui=AUWDL3z-b6CQL61McodG8IQIOK-JNIuCgCLpBhYORo0uhtZN8p_hjhsheU746rlBpryilkoajFcaM-uB&spc=RjZbSW4g8b9zKzIJ9snY5zYcn3ueW_OqCVUUYAtIPZGTqJj8E_rw&vprv=1&svpuc=1&mime=audio%2Fmp4&rqh=1&gir=yes&clen=1969956&dur=322.850&lmt=1697070472127895&keepalive=yes&fexp=24350590,24350737,24350825,24350827,24350961,24350977,24350979,24351064,24351082,24351129,24351132,24351147,24351172,24351202,51326932,51348729&c=IOS&txp=4532434&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cbui%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Crqh%2Cgir%2Cclen%2Cdur%2Clmt&sig=AJfQdSswRgIhAOgEHtJ8M6Qa-rKC8SU7Y_54_nHadnZygTz0RrrPW1VKAiEA1x5YZAYJQtYBhvQb5KYt7I3_WEz8b3PyijychgcXxGc%3D&title=Billie%20Eilish%20-%20i%20love%20you%20(Lyrics)&rm=sn-un5el7l&rrc=104,80&req_id=820beb1ca1fda3ee&ipbypass=yes&redirect_counter=2&cm2rm=sn-hvcpat-wxqy7s&cms_redirect=yes&cmsv=e&met=1739472885,&mh=PA&mip=176.224.157.183&mm=29&mn=sn-hgn7yn7l&ms=rdu&mt=1739472068&mv=m&mvi=5&pl=20&rms=rdu,au&lsparams=ipbypass,met,mh,mip,mm,mn,ms,mv,mvi,pl,rms&lsig=AGluJ3MwRQIhAO6mMfNG6MkU0eR2-fTyIW5FH6s6t4qeMDRLuRMASzZZAiB1V7n73lJnpBa4qUjQYHLnaXkS2mBjNyUzX0snny5xPg%3D%3D" 
+      type="audio/mp4" />
+    متصفحك لا يدعم تشغيل الصوت.
+  </audio>
+
+  <script>
+    // عناصر الصفحة
+    const envelope = document.getElementById("envelope");
+    const letter = document.getElementById("letter");
+    const modalOverlay = document.getElementById("modalOverlay");
+    const startMusicBtn = document.getElementById("startMusicBtn");
+    const volumeSlider = document.getElementById("volume");
+    const audio = document.getElementById("loveSong");
+
+    // عند النقر على الظرف -> تظهر النافذة المنبثقة لاختيار الصوت
+    envelope.addEventListener("click", () => {
+      modalOverlay.classList.add("active");
+    });
+
+    // عند النقر على زر تشغيل الموسيقى في المودال
+    startMusicBtn.addEventListener("click", () => {
+      audio.volume = volumeSlider.value;
+      audio.play().then(() => {
+        // إخفاء الظرف والـ Modal
+        envelope.style.display = "none";
+        modalOverlay.classList.remove("active");
+        // إظهار الرسالة
+        letter.classList.add("show");
+      }).catch(err => {
+        console.log("تعذّر تشغيل الصوت:", err);
+      });
+    });
+  </script>
+</body>
+</html>
